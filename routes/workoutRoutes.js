@@ -14,10 +14,22 @@ router.route("/:id").get((req, res) => {
   );
 
   if (selectedWorkout.length === 0) {
-    return res.status(404).json({ message: "No comments found" });
+    return res.status(404).json({ message: "No workout found" });
   }
 
   res.json(selectedWorkout);
+});
+
+router.route("/type/:type").get((req, res) => {
+  const { type } = req.params;
+  const workouts = JSON.parse(fs.readFileSync("./data/workouts.json"));
+  const selectedWorkouts = workouts.filter((workout) => workout.type === type);
+
+  if (selectedWorkouts.length === 0) {
+    return res.status(404).json({ message: "No workouts found" });
+  }
+
+  res.json(selectedWorkouts);
 });
 
 export default router;
